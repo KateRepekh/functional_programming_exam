@@ -2,24 +2,22 @@ module Main where
 
 import Data.List
 
-checkCond :: (Integral a) => (a -> a) -> [a] -> Bool
+checkCond :: (Integral a) => (a -> Bool) -> [a] -> Bool
 checkCond f [] = False
 checkCond f [x] = f x
 checkCond f (x:xs)
     | f x = True
-    | otherwise = checkCond xs
+    | otherwise = (checkCond f xs)
 
 
-generateList :: [Integer] -> Integer -> [[Integer]]
+generateList :: [Int] -> Int -> [[Int]]
 generateList xs n
-    | length xs == n = xs
-    | length xs == 0 = generateList [1] ++ generateList [2] ++ generateList [3]
-    | xs !! (length xs - 1) == 3 = generateList (xs ++ [1])
-    | xs !! (length xs - 1) == 2 = (generateList (xs ++ [1])) ++ (generateList (xs ++ [2])) 
-    | xs !! (length xs - 1) == 1 = (generateList (xs ++ [1])) ++ (generateList (xs ++ [2])) ++ (generateList (xs ++ [3]))
+    | (length xs) == n = [xs]
+    | (length xs) == 0 = (generateList [1] n) ++ (generateList [2] n) ++ (generateList [3] n)
+    | xs !! (length xs - 1) == 3 = (generateList (xs ++ [1]) n)
+    | xs !! (length xs - 1) == 2 = (generateList (xs ++ [1]) n) ++ (generateList (xs ++ [2]) n) 
+    | xs !! (length xs - 1) == 1 = (generateList (xs ++ [1]) n) ++ (generateList (xs ++ [2]) n) ++ (generateList (xs ++ [3]) n)
 
-
-main :: IO ()
 main = do
-    print generateList [] 3
-    print checkCond even [1, 3, 5, 7]
+    print (generateList [] 3)
+    print (checkCond even [1, 3, 5, 7])
